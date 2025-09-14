@@ -3,9 +3,28 @@ import urllib.parse
 import os
 import mimetypes
 import sqlite3
+import http.cookies
+import secrets
+
+SESSIONS = {}  # session_id -> username
 
 class MyHandler(BaseHTTPRequestHandler):
-    def do_GET(self):               
+    def do_GET(self):   
+        # Cookie handling
+        cookies = http.cookies.SimpleCookie(self.headers.get("Cookie"))
+        session_id = cookies.get("session_id")
+
+        if session_id and session_id.value in SESSIONS:
+            username = SESSIONS[session_id.value]
+            print(f"User {username} is logged in with session {session_id.value}")
+            self.send_response(200)
+        else:
+            print("No valid session found")
+            self.send_response(200)
+
+
+
+
         # Default to index.html
         path = self.path.lstrip("/")
         if path == "":
@@ -40,18 +59,51 @@ class MyHandler(BaseHTTPRequestHandler):
         if self.path == "/signup":
             success, msg = handle_signup(username, password, password_again)
             if success:
+                # Create session
+                sid = secrets.token_hex(16)
+                SESSIONS[sid] = username
+
                 self.send_response(302)  # redirect
-                self.send_header("Location", "/login.html")
+                self.send_header("Location", "/stones.html")
+                self.send_header("Set-Cookie", f"session_id={sid}; HttpOnly; Path=/")
                 self.end_headers()
             else:
-                self.respond_with_message(msg)
+                self.respond_with_message(msg, status=401)
 
         elif self.path == "/login":
             success, msg = handle_login(username, password)
             if success:
-                self.respond_with_message(msg)
+                self.send_response(302)
+                self.send_header('Location', '/home.html')
+                self.end_headers()                
             else:
                 self.respond_with_message(msg, status=401)
+
+        elif self.path == "/logout":
+            cookies = http.cookies.SimpleCookie(self.headers.get("Cookie"))
+            sid = cookies.get("session_id")
+            if sid and sid.value in SESSIONS:
+                del SESSIONS[sid.value]
+
+            self.send_response(302)
+            self.send_header("Location", "/index.html")
+            self.send_header("Set-Cookie", "session_id=; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Path=/")
+            self.end_headers()
+
+        elif self.path == "/set_stone":
+            stone = data.get("stone", [""])[0]
+            cookies = http.cookies.SimpleCookie(self.headers.get("Cookie"))
+            sid = cookies.get("session_id")
+            if sid and sid.value in SESSIONS:
+                username = SESSIONS[sid.value]
+                conn = sqlite3.connect("users.db")
+                c = conn.cursor()
+                c.execute("UPDATE users SET rock_group = ? WHERE username = ?", (stone, username))
+                conn.commit()
+                conn.close()
+                self.respond_with_message(f"Stone preference updated to {stone}")
+            else:
+                self.respond_with_message("Not logged in", status=401)
     
     def respond_with_message(self, message, status=200):
         self.send_response(status)
@@ -98,7 +150,9 @@ if __name__ == "__main__":
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL           
+            email TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL,
+            rock_group TEXT       
         )
         """)
     server = HTTPServer(("127.0.0.1", 8000), MyHandler)
