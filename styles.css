@@ -36,17 +36,19 @@ button:hover {
     cursor: pointer;
 }
 
-.password-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+input {
+    font-family: 'Dongle', sans-serif;
+    font-size: 32px;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 10px 0;
+    border: 2px solid var(--text-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
-table {
-  border-collapse: collapse;
-th {
-  border: 3px solid ;
+.password-container {
+  margin: 0 auto;
+  width: max(20%, 512px);
 }
-td {
-  line-height: 0.75 ;
-}}  
+  

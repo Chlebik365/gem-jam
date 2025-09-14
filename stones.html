@@ -6,96 +6,35 @@
   <title>Rock types | GemJam</title>
   <link rel="icon" href="/images/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="stones.css">
 </head>
-
-<h1>Choose the stone that fits you the most:</h1>
-
-<table border="1">
-  <tr>
-    <th>
-      <input type="radio" id="granite" name="stone" value="granite">
-      <label for="granite">Granite</label>
-    </th>
-    <th>
-      <input type="radio" id="marble" name="stone" value="marble">
-      <label for="marble">Marble</label>
-    </th>
-    <th>
-      <input type="radio" id="basalt" name="stone" value="basalt">
-      <label for="basalt">Basalt</label>
-    </th>
-    <th>
-      <input type="radio" id="sandstone" name="stone" value="sandstone">
-      <label for="sandstone">Sandstone</label>
-    </th>
-    <th>
-      <input type="radio" id="diamond" name="stone" value="diamond">
-      <label for="diamond">Diamond</label>
-    </th>
-  </tr>
-  <tr>
-    <td>Reliable, practical</td>
-    <td>Elegant, artistic</td>
-    <td>Tough, hardworking</td>
-    <td>Friendly, adaptable</td>
-    <td>Confident, brilliant</td>
-  </tr>
-  <tr>
-    <td>Building strong foundations, staying calm under pressure</td>
-    <td>Transforming the ordinary into beauty, inspiring others</td>
-    <td>Handling intense situations, providing solid support</td>
-    <td>Bringing people together, shaping communities</td>
-    <td>Cutting through problems, shining under pressure</td>
-  </tr>
-
-  <tr>
-    <th>
-      <input type="radio" id="emerald" name="stone" value="emerald">
-      <label for="emerald">Emerald</label>
-    </th>
-    <th>
-      <input type="radio" id="amethyst" name="stone" value="amethyst">
-      <label for="amethyst">Amethyst</label>
-    </th>
-    <th>
-      <input type="radio" id="obsidian" name="stone" value="obsidian">
-      <label for="obsidian">Obsidian</label>
-    </th>
-    <th>
-      <input type="radio" id="quartz" name="stone" value="quartz">
-      <label for="quartz">Quartz</label>
-    </th>
-    <th>
-      <input type="radio" id="turquoise" name="stone" value="turquoise" required>
-      <label for="turquoise">Turquoise</label>
-    </th>
-  </tr>
-  <tr>
-    <td>Wise, nurturing</td>
-    <td>Calm, creative</td>
-    <td>Intense, protective</td>
-    <td>Versatile, balanced</td>
-    <td>Cheerful, adventurous</td>
-  </tr>
-  <tr>
-    <td>Encouraging growth, bringing harmony</td>
-    <td>Inspiring clarity, soothing tensions</td>
-    <td>Revealing hidden truths, shielding from harm</td>
-    <td>Amplifying strengths, adapting easily</td>
-    <td>Healing connections, bridging cultures</td>
-  </tr>
-</table>
-
-<p>
-  I am the stone I chose above:
-  <button type="button" onclick="
-    const selected = document.querySelector('input[name=stone]:checked');
-    if (!selected) {
-      alert('Please select a stone first!');
-    } else {
-      localStorage.setItem('chosenStone', selected.value);
-      window.location.href = 'home.html';
-    }
-  ">
-    Yes
-  </button>
+<body>
+<form method="POST" action="/evaluate_traits">
+  <div class="traits-container">
+    <label class="trait-btn">
+      <input type="checkbox" name="traits" value="reliable">
+      <span>Reliable</span>
+    </label>
+    <label class="trait-btn">
+      <input type="checkbox" name="traits" value="artistic">
+      <span>Artistic</span>
+    </label>
+    <label class="trait-btn">
+      <input type="checkbox" name="traits" value="tough">
+      <span>Tough</span>
+    </label>
+    <label class="trait-btn">
+      <input type="checkbox" name="traits" value="friendly">
+      <span>Friendly</span>
+    </label>
+    <label class="trait-btn">
+      <input type="checkbox" name="traits" value="confident">
+      <span>Confident</span>
+    </label>
+  </div>
+  <button type="submit" disabled id="findStoneBtn">Find my stone</button>
+</form>
+<script src="stones.js"></script>
+<a href="index.html"><button type="submit" name="back">Back</button></a>
+</body>
+</html>

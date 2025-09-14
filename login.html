@@ -6,17 +6,25 @@
   <title>Log in | GemJam</title>
   <link rel="icon" href="images/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    button {
+      align-items: right;
+      justify-content: right;
+    }
+  </style>
 </head>
 <html>
 
 <body>
   <h1></h1>
   <!-- The form submits data to /submit on the server using POST -->
-  <form action="/login" method="post">
-    Username: <input type="text" name="username" required><br>
-    Password: <input type="password" name="password" required><br>
+  <form id="login-form" action="/login" method="post">
+    <input type="text" name="username" placeholder="Username" autocomplete="off"><br>
+    <input type="password" name="password" placeholder="Password"><br>
     <button type="submit">Log in</button>
   </form>
+  <p id="login-error" style="color:red; display:none;">Invalid login</p>
+  <script src="login.js"></script>
   <p>Don't have an account?
     <a href="signup.html"><button type="submit" name="signup">Sign up</button><br></a>
     <a href="index.html"><button type="submit" name="back">Back</button></a>

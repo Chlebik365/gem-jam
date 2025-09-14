@@ -10,21 +10,15 @@
 <html>
 
 <body>
-  <h2>So you are new to GemJam</h2>
-  <h3>Lets start with creating your account</h3>
+  <h2>New to GemJam?</h2>
+  <h3>Let's start with creating your account</h3>
   <!-- The form submits data to /signup on the server using POST -->
   <div class="password-container">
     <form action="/signup" method="post">
-      Email: <input type="email" name="Email_address" required><br>
-      Username: <input type="text" name="username" required><br>
-      Password: <input type="password" name="password" required><br>
-      <!-- password suggestion rules -->
-      <ul id="rules">
-        <li id="len">At least 8 characters</li>
-        <li id="num">At least 1 number</li>
-        <li id="cap">At least 1 uppercase letter</li>
-      </ul>
-      Password again: <input type="password" name="password_again" required><br>
+      <input type="email" name="Email_address" placeholder="email@example.com" autocomplete="off"><br>
+      <input type="text" name="username" placeholder="Name" autocomplete="off"><br>
+      <input type="password" name="password" placeholder="Password"><br>
+      <input type="password" name="password_again" placeholder="Repeat password"required><br>
       <button type="submit">Create account</button>
     </form>
   </div>
@@ -33,6 +27,5 @@
     <a href="index.html"><button type="submit" name="back">Back</button></a>
   </p>
 
-  <script src="password_suggestion.js"></script>
-
+</body>
 </html>

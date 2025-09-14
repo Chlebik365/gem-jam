@@ -1,0 +1,36 @@
+.traits-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.trait-btn input {
+  display: none; /* hide the default checkbox */
+}
+
+.trait-btn span {
+  display: inline-block;
+  padding: 10px 18px;
+  border: 2px solid var(--text-color);
+  border-radius: 12px;
+  font-size: 28px;
+  transition: all 0.2s ease;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.trait-btn span:hover {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  transform: scale(1.05);
+}
+
+.trait-btn input:checked + span {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  font-weight: bold;
+  transform: scale(0.95);
+}

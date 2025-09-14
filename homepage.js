@@ -5,7 +5,7 @@ const imagesEl = document.getElementById('images');
 const stoneSelection = document.getElementById('stone_selection');
 
 if (!stone) {
-    titleEl.textContent = 'No stone selected';
+    titleEl.textContent = "Don't have a stone group yet? Select one below!";
     stoneSelection.innerHTML = "<button onclick=\"window.location.href='stones.html'\">Go to Stones Page</button>";
 
 } else {
