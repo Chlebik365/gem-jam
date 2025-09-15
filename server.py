@@ -68,9 +68,11 @@ class MyHandler(BaseHTTPRequestHandler):
                 # Create session
                 sid = secrets.token_hex(16)
                 SESSIONS[sid] = username
-
+                print(f"User {username} signed up with session {sid}")
                 self.send_response(302)  # redirect
+                print("Redirecting to /stones.html")
                 self.send_header("Location", "/stones.html")
+                print("Redirect header sent")
                 self.send_header("Set-Cookie", f"session_id={sid}; HttpOnly; Path=/")
                 self.end_headers()
             else:
@@ -103,7 +105,6 @@ class MyHandler(BaseHTTPRequestHandler):
             self.end_headers()
 
         elif self.path == "/evaluate_traits":
-
 
             traits = data.get("traits", [])
             if len(traits) != 2:
@@ -141,22 +142,30 @@ class MyHandler(BaseHTTPRequestHandler):
 
 def handle_signup(username, email, password, password_again):
     conn = sqlite3.connect("users.db")
+    print("Connected to database for signup")
     c = conn.cursor()
+    conn.execute("PRAGMA foreign_keys = ON;")
     if password != password_again:
+        
         return False, "Passwords do not match"
 
     try:
         c.execute("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", (username, email, password))
         conn.commit()
+        print(f"User {username} signed up successfully")
         return True, "Signup successful"
     except sqlite3.IntegrityError:
+        print("Signup failed: username or email already exists")
+        print(f"Username: {username}, Email: {email}")
         return False, "Username or email already exists"
     finally:
+        print("Closing database connection after signup")
         conn.close()
 
 def handle_login(username, password):
     conn = sqlite3.connect("users.db")
     c = conn.cursor()
+    conn.execute("PRAGMA foreign_keys = ON;")
 
     c.execute("SELECT * FROM users WHERE username = ? AND password = ?", (username, password))
     user = c.fetchone()
@@ -177,8 +186,8 @@ if __name__ == "__main__":
         conn.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
-            email TEXT UNIQUE NOT NULL,
+            username TEXT NOT NULL,
+            email TEXT NOT NULL,
             password TEXT NOT NULL,
             rock_group TEXT       
         )
