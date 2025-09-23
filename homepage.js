@@ -1,21 +1,24 @@
+// homepage.js
 fetch("/api/stone", {
     method: "GET",
-    credentials: "include" // ensures cookies (session_id) are sent
+    credentials: "include" // include cookies like session_id
 })
 .then(response => {
     if (!response.ok) {
-        throw new Error("Could not fetch stone");
+        throw new Error("Failed to fetch stone");
     }
-    return response.json();
+    return response.json(); // parse response body as JSON
 })
 .then(data => {
     const stone = data.stone;
-    console.log("Stone:", stone);
-    // call your rendering code here
+    console.log("Stone from server:", stone);
+
+    // You can now call your rendering function here
     renderStone(stone);
 })
 .catch(error => {
     console.error("Error:", error);
+    console.log("No stone preference found or user not logged in.");
 });
 
 const titleEl = document.getElementById('title');

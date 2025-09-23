@@ -64,8 +64,6 @@ class MyHandler(BaseHTTPRequestHandler):
         email = data.get("email", [""])[0]
         password = data.get("password", [""])[0]
         password_again = data.get("password_again", [""])[0]
-        print(f"Received POST request on {self.path} with data: {data}")
-        print(f"Username: {username}, Email: {email}, Password: {password}, Password Again: {password_again}")
 
         if self.path == "/signup":
             success, msg = handle_signup(username, email, password, password_again)
@@ -182,13 +180,29 @@ class MyHandler(BaseHTTPRequestHandler):
         elif self.path == "/api/stone":
             sid = cookies.get("session_id")
             if sid and sid.value in SESSIONS:
+                print("Fetching stone preference for logged-in user...")
                 username = SESSIONS[sid.value]
                 conn = sqlite3.connect("users.db")
+                conn.row_factory = sqlite3.Row
                 c = conn.cursor()
                 c.execute("PRAGMA foreign_keys = ON;")
                 user = c.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
                 conn.close()
-                print(f"Fetched user from DB: {user}")
+                print(f"Fetched user from DB: {user["rock_group"]}")
+                if user and user["rock_group"]:
+                    stone = user["rock_group"]
+                    response = json.dumps({"stone": stone})
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/json")
+                    self.end_headers()
+                    self.wfile.write(response.encode())
+                
+                else:
+                    self.send_response(404)
+                    print(f"No stone preference found for user {user["username"]}")
+                    self.end_headers()
+                
+
                
     
     def respond_with_message(self, message, status=200):
