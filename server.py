@@ -5,6 +5,7 @@ import mimetypes
 import sqlite3
 import http.cookies
 import secrets
+import json
 
 SESSIONS = {}  # session_id -> username
 TRAIT_TO_STONE = {
@@ -187,9 +188,8 @@ class MyHandler(BaseHTTPRequestHandler):
                 c.execute("PRAGMA foreign_keys = ON;")
                 user = c.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
                 conn.close()
-                if user and user[4]:  # rock_group is at index 4, change if different
-                    stone = user[4]
-                    print(stone)
+                print(f"Fetched user from DB: {user}")
+               
     
     def respond_with_message(self, message, status=200):
         return
