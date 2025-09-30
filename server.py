@@ -201,6 +201,11 @@ class MyHandler(BaseHTTPRequestHandler):
                     self.send_response(404)
                     print(f"No stone preference found for user {user["username"]}")
                     self.end_headers()
+            else:
+                self.send_response(401)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": "Not logged in"}).encode())
                 
 
                
@@ -265,6 +270,6 @@ if __name__ == "__main__":
             rock_group TEXT       
         )
         """)
-    server = HTTPServer(("127.0.0.1", 8000), MyHandler)
-    print("Server running at http://127.0.0.1:8000")
+    server = HTTPServer(("127.0.0.1", 80), MyHandler)
+    print("Server running at http://127.0.0.1")
     server.serve_forever()
