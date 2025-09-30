@@ -1,11 +1,18 @@
 :root {
-    --bg-color: #2d2d2d;
+    --bg-color: #1C1B22;
     --text-color: #ffffff;
 }
+
+:root.light {
+    --bg-color: #ffffff;
+    --text-color: black;
+}
+
 @font-face {
   font-family: "Dongle";
   src: url("fonts/Dongle-Light.ttf") format("truetype");
 }
+
 body {
     background: var(--bg-color);
     color: var(--text-color);
@@ -51,4 +58,4 @@ input {
   margin: 0 auto;
   width: max(20%, 512px);
 }
-  
+
