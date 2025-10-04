@@ -9,11 +9,17 @@ import json
 
 SESSIONS = {}  # session_id -> username
 TRAIT_TO_STONE = {
-    frozenset({"reliable", "tough"}): "Granite",
-    frozenset({"artistic", "confident"}): "Diamond",
-    frozenset({"friendly", "artistic"}): "Marble",
+    frozenset({"artistic","reliable"}): "Amethyst",
     frozenset({"reliable", "confident"}): "Basalt",
-    frozenset({"tough", "friendly"}): "Limestone",
+    frozenset({"artistic", "confident"}): "Diamond",
+    frozenset({"friendly", "confident"}): "Emerald",
+    frozenset({"reliable", "tough"}): "Lapis Lazuli",
+    frozenset({"friendly", "artistic"}): "Marble",
+    frozenset({"tough", "confident"}): "Obsidian",
+    frozenset({"tough", "reliable"}): "Quartz",
+    frozenset({"friendly", "reliable"}): "Sandstone",
+    frozenset({""}): "Turquoise",
+
     # ... etc for all combos
 }
 
@@ -270,6 +276,6 @@ if __name__ == "__main__":
             rock_group TEXT       
         )
         """)
-    server = HTTPServer(("127.0.0.1", 80), MyHandler)
-    print("Server running at http://127.0.0.1")
+    server = HTTPServer(("192.168.30.59", 80), MyHandler)
+    print("Server running at http://192.168.30.59")
     server.serve_forever()
