@@ -5,14 +5,21 @@ import mimetypes
 import sqlite3
 import http.cookies
 import secrets
+import json
 
 SESSIONS = {}  # session_id -> username
 TRAIT_TO_STONE = {
-    frozenset({"reliable", "tough"}): "Granite",
-    frozenset({"artistic", "confident"}): "Diamond",
-    frozenset({"friendly", "artistic"}): "Marble",
+    frozenset({"artistic","reliable"}): "Amethyst",
     frozenset({"reliable", "confident"}): "Basalt",
-    frozenset({"tough", "friendly"}): "Limestone",
+    frozenset({"artistic", "confident"}): "Diamond",
+    frozenset({"friendly", "confident"}): "Emerald",
+    frozenset({"reliable", "tough"}): "Lapis Lazuli",
+    frozenset({"friendly", "artistic"}): "Marble",
+    frozenset({"tough", "confident"}): "Obsidian",
+    frozenset({"tough", "reliable"}): "Quartz",
+    frozenset({"friendly", "reliable"}): "Sandstone",
+    frozenset({""}): "Turquoise",
+
     # ... etc for all combos
 }
 
@@ -63,8 +70,6 @@ class MyHandler(BaseHTTPRequestHandler):
         email = data.get("email", [""])[0]
         password = data.get("password", [""])[0]
         password_again = data.get("password_again", [""])[0]
-        print(f"Received POST request on {self.path} with data: {data}")
-        print(f"Username: {username}, Email: {email}, Password: {password}, Password Again: {password_again}")
 
         if self.path == "/signup":
             success, msg = handle_signup(username, email, password, password_again)
@@ -181,15 +186,35 @@ class MyHandler(BaseHTTPRequestHandler):
         elif self.path == "/api/stone":
             sid = cookies.get("session_id")
             if sid and sid.value in SESSIONS:
+                print("Fetching stone preference for logged-in user...")
                 username = SESSIONS[sid.value]
                 conn = sqlite3.connect("users.db")
+                conn.row_factory = sqlite3.Row
                 c = conn.cursor()
                 c.execute("PRAGMA foreign_keys = ON;")
                 user = c.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
                 conn.close()
-                if user and user[4]:  # rock_group is at index 4, change if different
-                    stone = user[4]
-                    print(stone)
+                print(f"Fetched user from DB: {user["rock_group"]}")
+                if user and user["rock_group"]:
+                    stone = user["rock_group"]
+                    response = json.dumps({"stone": stone})
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/json")
+                    self.end_headers()
+                    self.wfile.write(response.encode())
+                
+                else:
+                    self.send_response(404)
+                    print(f"No stone preference found for user {user["username"]}")
+                    self.end_headers()
+            else:
+                self.send_response(401)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": "Not logged in"}).encode())
+                
+
+               
     
     def respond_with_message(self, message, status=200):
         return
@@ -251,6 +276,6 @@ if __name__ == "__main__":
             rock_group TEXT       
         )
         """)
-    server = HTTPServer(("127.0.0.1", 8000), MyHandler)
-    print("Server running at http://127.0.0.1:8000")
+    server = HTTPServer(("192.168.30.59", 80), MyHandler)
+    print("Server running at http://192.168.30.59")
     server.serve_forever()
