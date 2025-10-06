@@ -277,8 +277,7 @@ if __name__ == "__main__":
         )
         """)
 
-=======
+
     server = HTTPServer(("127.0.0.1", 80), MyHandler)
     print("Server running at http://127.0.0.1:80")
->>>>>>> fb5ec0b (popup sidebar)
     server.serve_forever()
