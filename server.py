@@ -276,6 +276,6 @@ if __name__ == "__main__":
             rock_group TEXT       
         )
         """)
-    server = HTTPServer(("192.168.0.63", 80), MyHandler)
-    print("Server running at http://192.168.0.63")
+    server = HTTPServer(("127.0.0.1", 80), MyHandler)
+    print("Server running at http://127.0.0.1")
     server.serve_forever()

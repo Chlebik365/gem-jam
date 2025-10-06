@@ -1,6 +1,7 @@
 :root {
     --bg-color: #1C1B22;
     --text-color: #ffffff;
+    --accent-color: #1B1A21;
 }
 
 :root.light {
@@ -66,11 +67,16 @@ input {
 }
 
 .navbar {
-    background-color: var(--bg-color);
+    width: min(20%, 200px);
+    background-color: var(--accent-color);
+    border-radius: 10px;
+    border: 2px solid var(--text-color);
     padding: 10px;
     text-align: left;
-    position: sticky;
+    position: fixed;
     top: 0;
+    float: left;
+    margin: 10px;
     z-index: 1000;
     display: block;
 }
