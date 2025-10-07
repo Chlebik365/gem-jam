@@ -17,12 +17,30 @@
   </style>
 </head>
 
+<button id="open-sidebar" class="hamburger-btn" aria-label="Open menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<!-- Sidebar overlay -->
+<div id="sidebar-overlay"></div>
+
+<!-- Sidebar panel -->
+<div id="sidebar">
+  <button id="sidebar-close" class="sidebar-btn">✖</button>
+
+  <div class="settings-section">
+    <button id="toggle-btn">Toggle Dark/Light</button>
+    <form action="/logout" method="post"><button type="submit">Log out</button></form>
+    <form action="/home" method="post"><button type="submit">Homepage</button></form> 
+  </div>
+</div>
+
 <body>
-  <h1><div id="stone"></div></h1>
+  <h1>Welcome to<div id="stone"></div> group</h1>
   <div id="images"></div>
-  <button onclick="location.href='index.html'">Back to main page</button>
   <script src="homepage.js"></script>
-  <button id="toggle-btn">Toggle Dark/Light</button>
   <script src="styles.js"></script>
 
 </body>

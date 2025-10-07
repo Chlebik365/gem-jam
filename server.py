@@ -16,7 +16,7 @@ TRAIT_TO_STONE = {
     frozenset({"reliable", "tough"}): "Lapis Lazuli",
     frozenset({"friendly", "artistic"}): "Marble",
     frozenset({"tough", "confident"}): "Obsidian",
-    frozenset({"tough", "reliable"}): "Quartz",
+    frozenset({"tough", "friendly"}): "Quartz",
     frozenset({"friendly", "reliable"}): "Sandstone",
     frozenset({""}): "Turquoise",
 
