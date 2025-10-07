@@ -9,18 +9,35 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 
+<button id="open-sidebar" class="hamburger-btn" aria-label="Open menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+
+<!-- Sidebar overlay -->
+<div id="sidebar-overlay"></div>
+
+<!-- Sidebar panel -->
+<div id="sidebar">
+  <button id="sidebar-close" class="sidebar-btn">✖</button>
+
+  <div class="settings-section">
+    <button id="toggle-btn">Toggle Dark/Light</button>
+    <form action="/logout" method="post"><button type="submit">Log out</button></form>
+    <form action="/home" method="post"><button type="submit">Homepage</button></form> 
+  </div>
+</div>
+
 <h2>Welcome to GemJam</h2>
 <h3>Sign up or Log in and take quiz to find out which rock-group are you in!</h3>
 
 <div class="navbar">
   <form action="/check-login" method="post"><button type="submit">Log in</button></form>
   <form action="/check-signup" method="post"><button type="submit">Sign up</button></form>
-  <form action ="/api/stone" method="post"><button type="submit">Continue as Guest</button></form>
-  <form action="/home" method="post"><button type="submit">Homepage</button></form>
-  <form action="/logout" method="post"><button type="submit">Log out</button></form>
-  <button id="toggle-btn">Toggle Dark/Light</button>
-</div>
-
+</h3>
+<form action ="/api/stone" method="post"><button type="submit">Continue as Guest</button></form>
 <script src="styles.js"></script>
 
 </html>

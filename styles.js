@@ -1,24 +1,38 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Apply saved theme on page load
+  // Apply saved theme
   const savedTheme = localStorage.getItem("theme");
   if (savedTheme === "light") {
     document.documentElement.classList.add("light");
-  } else {
-    document.documentElement.classList.remove("light"); // default dark
   }
 
-  // Toggle button logic (only if it exists on this page)
+  // Toggle theme
   const toggleBtn = document.getElementById("toggle-btn");
   if (toggleBtn) {
     toggleBtn.addEventListener("click", () => {
       document.documentElement.classList.toggle("light");
-
-      // Save current theme
-      if (document.documentElement.classList.contains("light")) {
-        localStorage.setItem("theme", "light");
-      } else {
-        localStorage.setItem("theme", "dark");
-      }
+      const theme = document.documentElement.classList.contains("light") ? "light" : "dark";
+      localStorage.setItem("theme", theme);
     });
+  }
+
+  // Sidebar logic
+  const openSidebarBtn = document.getElementById("open-sidebar");
+  const sidebar = document.getElementById("sidebar");
+  const closeSidebarBtn = document.getElementById("sidebar-close");
+  const overlay = document.getElementById("sidebar-overlay");
+
+  if (openSidebarBtn && sidebar && closeSidebarBtn && overlay) {
+    openSidebarBtn.addEventListener("click", () => {
+      sidebar.classList.add("open");
+      overlay.classList.add("active");
+    });
+
+    const closeSidebar = () => {
+      sidebar.classList.remove("open");
+      overlay.classList.remove("active");
+    };
+
+    closeSidebarBtn.addEventListener("click", closeSidebar);
+    overlay.addEventListener("click", closeSidebar);
   }
 });
